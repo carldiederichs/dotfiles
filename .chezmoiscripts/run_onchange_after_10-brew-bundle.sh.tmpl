@@ -1,0 +1,18 @@
+#!/bin/bash
+# Re-runs whenever the Brewfile changes. Brewfile hash: {{ include "dot_Brewfile.tmpl" | sha256sum }}
+set -uo pipefail
+
+for b in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+  [ -x "$b" ] && eval "$($b shellenv)" && break
+done
+command -v brew >/dev/null 2>&1 || { echo "==> brew not found; skipping bundle"; exit 0; }
+
+if [ -n "${CI:-}" ]; then
+  echo "==> [CI] validating Brewfile syntax only (no installs)"
+  brew bundle list --global >/dev/null
+  exit 0
+fi
+
+echo "==> Installing packages from ~/.Brewfile (this can take a while; safe to leave running)..."
+brew bundle --global --no-upgrade || \
+  echo "==> WARNING: some Brewfile entries failed (corporate policy may block casks). Re-run later with: brew bundle --global --no-upgrade"

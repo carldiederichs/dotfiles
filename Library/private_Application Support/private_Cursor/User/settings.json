@@ -1,0 +1,42 @@
+{
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.startupEditor": "none",
+    "window.zoomLevel": 1,
+    "editor.minimap.enabled": false,
+    "vsicons.dontShowNewVersionMessage": true,
+    "vsicons.presets.jsonOfficial": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+    "files.autoSave": "afterDelay",
+    "files.associations": {
+        "*.nnb": "markdown"
+    },
+    "editor.insertSpaces": false,
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.settings.applyToAllProfiles": [],
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "window.autoDetectColorScheme": false,
+    "git.autofetch": true,
+    "security.promptForLocalFileProtocolHandling": false,
+    "git.openRepositoryInParentFolders": "never"
+}

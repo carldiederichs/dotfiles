@@ -1,0 +1,16 @@
+{{- $machine := promptChoiceOnce . "machine" "machine" (list "personal" "work") -}}
+{{- $name := promptStringOnce . "name" "name" "Carl Diederichs" -}}
+{{- $emailDefault := ternary "carl-diederichs@t-online.de" "" (eq $machine "personal") -}}
+{{- $email := promptStringOnce . "email" "email" $emailDefault -}}
+
+[data]
+    machine = {{ $machine | quote }}
+    name = {{ $name | quote }}
+    email = {{ $email | quote }}
+
+[git]
+    autoCommit = true
+    autoPush = true
+
+[diff]
+    exclude = ["scripts"]

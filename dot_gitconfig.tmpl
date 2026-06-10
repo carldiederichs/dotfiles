@@ -1,0 +1,32 @@
+[user]
+    name = {{ .name }}
+    email = {{ .email }}
+
+[core]
+    editor = vim
+
+[http]
+    postBuffer = 524288000
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = false
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    lg = log --oneline --graph --decorate
+
+[filter "lfs"]
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+
+[include]
+    # Machine-local overrides (not managed by chezmoi, e.g. work signing key)
+    path = ~/.gitconfig.local

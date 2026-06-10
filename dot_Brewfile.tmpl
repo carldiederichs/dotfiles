@@ -1,0 +1,59 @@
+tap "nikitabobko/tap"
+
+# ------------------------------------------------------------------------------
+# CLI tools (all machines)
+# ------------------------------------------------------------------------------
+brew "git"
+brew "gh"
+brew "chezmoi"
+brew "atuin"
+brew "direnv"
+brew "jq"
+brew "wget"
+brew "tree"
+brew "pyenv"
+brew "gitleaks"
+brew "powerlevel10k"
+brew "zsh-syntax-highlighting"
+
+# ------------------------------------------------------------------------------
+# Apps (all machines)
+# ------------------------------------------------------------------------------
+cask "iterm2"
+cask "nikitabobko/tap/aerospace"
+cask "raycast"
+cask "1password"
+cask "1password-cli"
+cask "cursor"
+cask "visual-studio-code"
+cask "claude-code"
+cask "codex"
+cask "google-chrome"
+cask "obsidian"
+cask "notion"
+cask "slack"
+cask "zoom"
+cask "docker-desktop"
+cask "postman"
+cask "dbeaver-community"
+cask "font-meslo-lg-nerd-font"
+
+{{ if eq .machine "personal" -}}
+# ------------------------------------------------------------------------------
+# Personal machine only
+# ------------------------------------------------------------------------------
+brew "ollama"
+brew "ical-buddy"
+brew "postgresql@14"
+brew "imagemagick"
+brew "tesseract"
+brew "act"
+brew "ncdu"
+brew "mongodb-atlas-cli"
+brew "yarn"
+cask "betterdisplay"
+cask "gcloud-cli"
+cask "spotify"
+cask "expressvpn"
+cask "whatsapp"
+{{- end }}

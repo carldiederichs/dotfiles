@@ -1,0 +1,59 @@
+name: bootstrap-e2e
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install chezmoi exactly like the bootstrap one-liner
+        run: sh -c "$(curl -fsSL get.chezmoi.io)" -- -b "$HOME/.local/bin"
+
+      - name: Bootstrap from the checked-out source (work profile)
+        env:
+          CI: "true"
+        run: |
+          "$HOME/.local/bin/chezmoi" init --apply \
+            --source "$GITHUB_WORKSPACE" \
+            --promptChoice "machine=work" \
+            --promptString "name=CI Bot,email=ci@example.com"
+
+      - name: Assert applied state
+        run: |
+          set -x
+          test -f ~/.zshrc
+          test -f ~/.p10k.zsh
+          test -f ~/.zprofile
+          test -f ~/.Brewfile
+          test -f ~/.aerospace.toml
+          test -x ~/.config/aerospace/presets.sh
+          test -f ~/.config/zsh/aliases.zsh
+          test -f ~/.config/gh/config.yml
+          test -f ~/.config/atuin/config.toml
+          test -f ~/.config/iterm2/com.googlecode.iterm2.plist
+          test -f ~/.claude/settings.json
+          test -f "$HOME/Library/Application Support/Cursor/User/settings.json"
+          test -f "$HOME/Library/Application Support/Code/User/settings.json"
+          grep -q "ci@example.com" ~/.gitconfig
+          # work profile must NOT contain personal-only apps
+          ! grep -q "spotify" ~/.Brewfile
+          # Brewfile is syntactically valid
+          brew bundle list --file ~/.Brewfile >/dev/null
+
+      - name: Zshrc sources cleanly
+        run: |
+          # omz was installed by the run_once script; zshrc must not error
+          zsh -ic 'echo zsh-ok' 2>&1 | tail -5
+          zsh -ic 'echo zsh-ok' 2>&1 | grep -q zsh-ok
+
+      - name: chezmoi verify
+        run: |
+          "$HOME/.local/bin/chezmoi" verify --exclude scripts
+          "$HOME/.local/bin/chezmoi" doctor || true

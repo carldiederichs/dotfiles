@@ -1,0 +1,149 @@
+# ==============================================================================
+# ZSH Configuration — managed by chezmoi (github.com/carldiederichs/dotfiles)
+# Edit with: chezmoi edit ~/.zshrc --apply   (never edit ~/.zshrc directly)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Powerlevel10k Instant Prompt (must be at top)
+# ------------------------------------------------------------------------------
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# ------------------------------------------------------------------------------
+# Oh My Zsh Configuration
+# ------------------------------------------------------------------------------
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""  # We use Powerlevel10k instead
+
+# Plugins (zsh-syntax-highlighting should be last)
+plugins=(git)
+
+# Disable auto-title for iTerm2 tab titles
+DISABLE_AUTO_TITLE="true"
+
+# Load Oh My Zsh
+source "$ZSH/oh-my-zsh.sh"
+
+# ------------------------------------------------------------------------------
+# Powerlevel10k Theme (installed via Homebrew)
+# ------------------------------------------------------------------------------
+if [[ -f "/opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+  source "/opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme"
+elif [[ -f "/usr/local/share/powerlevel10k/powerlevel10k.zsh-theme" ]]; then
+  source "/usr/local/share/powerlevel10k/powerlevel10k.zsh-theme"
+fi
+
+# Load Powerlevel10k config
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+# ------------------------------------------------------------------------------
+# Environment Variables
+# ------------------------------------------------------------------------------
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# ------------------------------------------------------------------------------
+# PATH Configuration
+# ------------------------------------------------------------------------------
+export PATH="/usr/local/bin:$PATH"
+
+# Homebrew (Apple Silicon)
+if [[ -d "/opt/homebrew/bin" ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+# ------------------------------------------------------------------------------
+# NVM (Node Version Manager)
+# ------------------------------------------------------------------------------
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# ------------------------------------------------------------------------------
+# Pyenv (Python Version Manager) - Uncomment if needed
+# ------------------------------------------------------------------------------
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# eval "$(pyenv init --path)"
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
+
+# ------------------------------------------------------------------------------
+# Atuin (Shell History)
+# ------------------------------------------------------------------------------
+if command -v atuin &> /dev/null; then
+  eval "$(atuin init zsh)"
+fi
+
+# ------------------------------------------------------------------------------
+# Direnv (Directory-based Environment)
+# ------------------------------------------------------------------------------
+if command -v direnv &> /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+# ------------------------------------------------------------------------------
+# Google Cloud SDK
+# ------------------------------------------------------------------------------
+if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ]; then
+  source '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+elif [ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc' ]; then
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+fi
+
+if [ -f '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' ]; then
+  source '/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+elif [ -f '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc' ]; then
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+fi
+
+# ------------------------------------------------------------------------------
+# Custom Functions
+# ------------------------------------------------------------------------------
+# Create a file and any missing parent directories.
+function mkfile {
+    mkdir -p "$(dirname "$1")" && touch "$1"
+}
+
+# Set tab title to the last part of the current directory path
+function set_tab_title {
+    local dir_name="${PWD##*/}"
+    echo -ne "\033]0;${dir_name}\007"
+}
+
+# Call set_tab_title function before the prompt is displayed
+precmd() { set_tab_title }
+
+# Efficient screen clearing on window resize
+TRAPWINCH() {
+  printf '\033[H\033[J'
+  zle && zle reset-prompt || true
+}
+
+# ------------------------------------------------------------------------------
+# Aliases
+# ------------------------------------------------------------------------------
+[[ -f "$HOME/.config/zsh/aliases.zsh" ]] && source "$HOME/.config/zsh/aliases.zsh"
+
+# Machine-local additions (not managed by chezmoi, e.g. work-specific)
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+# ------------------------------------------------------------------------------
+# Zsh Syntax Highlighting (MUST BE LAST) — installed via Homebrew
+# ------------------------------------------------------------------------------
+if [[ -f "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+  source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [[ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+  source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [[ -f "$ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+  source "$ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
+export PATH="$HOME/.local/bin:$PATH"

@@ -1,0 +1,17 @@
+#!/bin/bash
+# Re-runs whenever the extension list changes. Hash: {{ include "dot_config/cursor/extensions.txt" | sha256sum }}
+set -euo pipefail
+
+CURSOR_BIN="$(command -v cursor || true)"
+[ -z "$CURSOR_BIN" ] && [ -x /usr/local/bin/cursor ] && CURSOR_BIN=/usr/local/bin/cursor
+if [ -z "$CURSOR_BIN" ]; then
+  echo "==> cursor CLI not found (open Cursor once, then re-run: chezmoi apply); skipping extensions"
+  exit 0
+fi
+
+while IFS= read -r ext; do
+  [ -z "$ext" ] && continue
+  "$CURSOR_BIN" --install-extension "$ext" >/dev/null 2>&1 \
+    && echo "==> Cursor extension installed: $ext" \
+    || echo "==> WARNING: failed to install Cursor extension: $ext"
+done < "$HOME/.config/cursor/extensions.txt"

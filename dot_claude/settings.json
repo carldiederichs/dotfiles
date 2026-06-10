@@ -1,0 +1,36 @@
+{
+  "outputStyle": "learning",
+  "permissions": {
+    "allow": [
+      "mcp__excalidraw__create_element",
+      "mcp__excalidraw__batch_create_elements",
+      "mcp__excalidraw__create_from_mermaid",
+      "mcp__excalidraw__get_canvas_screenshot",
+      "mcp__excalidraw__export_to_image",
+      "mcp__excalidraw__export_scene",
+      "mcp__excalidraw__describe_scene",
+      "mcp__excalidraw__query_elements",
+      "mcp__excalidraw__get_element",
+      "mcp__excalidraw__clear_canvas",
+      "mcp__excalidraw__delete_element",
+      "mcp__excalidraw__read_diagram_guide"
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "karpathy-skills": {
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "andrej-karpathy-skills@karpathy-skills": true
+  }
+}
