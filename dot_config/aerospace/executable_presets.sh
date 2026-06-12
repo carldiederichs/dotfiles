@@ -95,6 +95,14 @@ move_windows_to_workspace() {
     done
 }
 
+force_windows_to_tiling() {
+    local window_id
+
+    for window_id in "$@"; do
+        "$AEROSPACE" layout --window-id "$window_id" tiling || true
+    done
+}
+
 window_parent_layout() {
     local workspace="$1"
     local window_id="$2"
@@ -209,7 +217,8 @@ layout_preset() {
     move_windows_to_workspace "$workspace" "${left_windows[@]}" "${right_windows[@]}"
     # AeroSpace applies the moves asynchronously. Let the rebuilt tree settle before directional joins.
     /bin/sleep 0.2
-    "$AEROSPACE" workspace "$workspace"
+    "$AEROSPACE" workspace "$workspace" || true
+    force_windows_to_tiling "${left_windows[@]}" "${right_windows[@]}"
     "$AEROSPACE" flatten-workspace-tree --workspace "$workspace"
     "$AEROSPACE" layout --window-id "${left_windows[0]}" h_tiles || true
 

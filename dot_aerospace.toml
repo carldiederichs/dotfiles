@@ -109,8 +109,8 @@ cmd-alt-ctrl-j = 'resize smart -50'
 cmd-alt-ctrl-k = 'resize smart +50'
 
 # Rebuild the active workspace and toggle the interview-friendly share screen.
-cmd-alt-ctrl-p = 'exec-and-forget ~/.config/aerospace/presets.sh layout'
-cmd-alt-ctrl-v = 'exec-and-forget ~/.config/aerospace/presets.sh video-toggle'
+cmd-alt-ctrl-p = 'exec-and-forget /Users/carldiederichs/dotfiles/aerospace/presets.sh layout'
+cmd-alt-ctrl-v = 'exec-and-forget /Users/carldiederichs/dotfiles/aerospace/presets.sh video-toggle'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace 1'
