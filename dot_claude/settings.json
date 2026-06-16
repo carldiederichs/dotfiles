@@ -1,5 +1,4 @@
 {
-  "outputStyle": "learning",
   "permissions": {
     "allow": [
       "mcp__excalidraw__create_element",
@@ -16,6 +15,9 @@
       "mcp__excalidraw__read_diagram_guide"
     ]
   },
+  "enabledPlugins": {
+    "andrej-karpathy-skills@karpathy-skills": true
+  },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {
@@ -30,7 +32,5 @@
       }
     }
   },
-  "enabledPlugins": {
-    "andrej-karpathy-skills@karpathy-skills": true
-  }
+  "outputStyle": "learning"
 }

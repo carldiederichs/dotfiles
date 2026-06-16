@@ -8,7 +8,7 @@ DELL_RESOLUTION="3840x1620"
 VIRTUAL_DISPLAY="Interview 16:9"
 VIRTUAL_RESOLUTION="3840x2160"
 STAGING_WORKSPACE="PRESET-STAGING"
-UNMATCHED_WORKSPACE="2"
+UNMATCHED_WORKSPACE="N"
 REFERENCE_MONITOR_WIDTH=3840
 REFERENCE_LEFT_WIDTH=2550
 MIN_AGENT_WIDTH=600
@@ -93,6 +93,16 @@ move_windows_to_workspace() {
     for window_id in "$@"; do
         "$AEROSPACE" move-node-to-workspace --window-id "$window_id" "$target"
     done
+}
+
+restore_staged_windows() {
+    local target="$1"
+    local window_id
+
+    while IFS= read -r window_id; do
+        [[ -n "$window_id" ]] || continue
+        "$AEROSPACE" move-node-to-workspace --window-id "$window_id" "$target" || true
+    done < <("$AEROSPACE" list-windows --workspace "$STAGING_WORKSPACE" --format '%{window-id}%{newline}' 2>/dev/null || true)
 }
 
 force_windows_to_tiling() {
@@ -183,7 +193,6 @@ layout_preset() {
     fi
     (( left_width > 0 )) || die "Focused workspace monitor is too narrow for the preset."
 
-    [[ "$workspace" != "$UNMATCHED_WORKSPACE" ]] || die "Workspace 2 is reserved for unmatched windows. Run the preset from another workspace."
     [[ "$(window_count "$STAGING_WORKSPACE")" == "0" ]] || die "Reserved staging workspace is not empty: $STAGING_WORKSPACE"
 
     while IFS=$'\t' read -r window_id bundle_id window_workspace; do
@@ -206,29 +215,48 @@ layout_preset() {
     if [[ "$dry_run" == "--dry-run" ]]; then
         return 0
     fi
-    (( ${#left_windows[@]} > 0 )) || die "No left-side work windows found on workspace $workspace."
-    (( ${#right_windows[@]} > 0 )) || die "No right-side agent windows found on workspace $workspace."
+    if (( ${#left_windows[@]} == 0 && ${#right_windows[@]} == 0 )); then
+        notify "No preset windows found on workspace $workspace."
+        return 0
+    fi
+
+    trap 'restore_staged_windows "$workspace"' ERR
 
     move_windows_to_workspace "$STAGING_WORKSPACE" "${left_windows[@]}" "${right_windows[@]}"
-    if (( ${#unmatched_windows[@]} > 0 )); then
+    if (( ${#unmatched_windows[@]} > 0 )) && [[ "$workspace" != "$UNMATCHED_WORKSPACE" ]]; then
         move_windows_to_workspace "$UNMATCHED_WORKSPACE" "${unmatched_windows[@]}"
     fi
 
     move_windows_to_workspace "$workspace" "${left_windows[@]}" "${right_windows[@]}"
+    trap - ERR
     # AeroSpace applies the moves asynchronously. Let the rebuilt tree settle before directional joins.
     /bin/sleep 0.2
-    "$AEROSPACE" workspace "$workspace" || true
+    "$AEROSPACE" workspace "$workspace" >/dev/null 2>&1 || true
     force_windows_to_tiling "${left_windows[@]}" "${right_windows[@]}"
     "$AEROSPACE" flatten-workspace-tree --workspace "$workspace"
-    "$AEROSPACE" layout --window-id "${left_windows[0]}" h_tiles || true
+    if (( ${#left_windows[@]} > 0 )); then
+        "$AEROSPACE" layout --window-id "${left_windows[0]}" h_tiles || true
+    fi
 
-    group_as_vertical_accordion "$workspace" "${left_windows[@]}"
-    group_as_vertical_accordion "$workspace" "${right_windows[@]}"
+    if (( ${#left_windows[@]} > 0 )); then
+        group_as_vertical_accordion "$workspace" "${left_windows[@]}"
+    fi
+    if (( ${#right_windows[@]} > 0 )); then
+        group_as_vertical_accordion "$workspace" "${right_windows[@]}"
+    fi
     "$AEROSPACE" balance-sizes --workspace "$workspace"
-    "$AEROSPACE" resize --window-id "${left_windows[0]}" width "$left_width"
-    "$AEROSPACE" focus --window-id "${left_windows[0]}"
+    if (( ${#left_windows[@]} > 0 && ${#right_windows[@]} > 0 )); then
+        "$AEROSPACE" resize --window-id "${left_windows[0]}" width "$left_width"
+        "$AEROSPACE" focus --window-id "${left_windows[0]}"
+        notify "Applied the two-thirds work and one-third agent layout on workspace $workspace."
+    elif (( ${#left_windows[@]} > 0 )); then
+        "$AEROSPACE" focus --window-id "${left_windows[0]}"
+        notify "Applied the work-window preset on workspace $workspace."
+    else
+        "$AEROSPACE" focus --window-id "${right_windows[0]}"
+        notify "Applied the agent-window preset on workspace $workspace."
+    fi
 
-    notify "Applied the two-thirds work and one-third agent layout on workspace $workspace."
 }
 
 bd_get() {

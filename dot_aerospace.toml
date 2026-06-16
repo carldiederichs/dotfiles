@@ -58,6 +58,10 @@ outer.bottom =     10
 outer.top =        10
 outer.right =      10
 
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace N'
+
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'main' binding mode must be always presented
@@ -113,10 +117,17 @@ cmd-alt-ctrl-p = 'exec-and-forget /Users/carldiederichs/dotfiles/aerospace/prese
 cmd-alt-ctrl-v = 'exec-and-forget /Users/carldiederichs/dotfiles/aerospace/presets.sh video-toggle'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+# 1 leetcode-algorithmic, 2 tally, 3 bug-squash, 4 integration, 5 code-refactoring
+# 6 concurrency, 7 lld-ood, 8 api-design, 9 leetcode-practical, N notes/flashcards
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
 alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
 alt-b = 'workspace B'
 alt-c = 'workspace C'
 alt-n = 'workspace N'
