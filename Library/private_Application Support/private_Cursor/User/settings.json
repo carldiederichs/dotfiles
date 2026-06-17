@@ -38,5 +38,6 @@
     "window.autoDetectColorScheme": false,
     "git.autofetch": true,
     "security.promptForLocalFileProtocolHandling": false,
-    "git.openRepositoryInParentFolders": "never"
+    "git.openRepositoryInParentFolders": "never",
+    "claudeCode.preferredLocation": "panel"
 }

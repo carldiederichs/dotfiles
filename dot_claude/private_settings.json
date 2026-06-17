@@ -32,5 +32,6 @@
       }
     }
   },
-  "outputStyle": "learning"
+  "outputStyle": "learning",
+  "skipWorkflowUsageWarning": true
 }
