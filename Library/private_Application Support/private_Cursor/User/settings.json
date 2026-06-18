@@ -39,5 +39,6 @@
     "git.autofetch": true,
     "security.promptForLocalFileProtocolHandling": false,
     "git.openRepositoryInParentFolders": "never",
-    "claudeCode.preferredLocation": "panel"
+    "claudeCode.preferredLocation": "panel",
+    "chatgpt.commentCodeLensEnabled": false
 }
