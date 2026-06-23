@@ -1,3 +1,11 @@
+Host github.com-carl-manta
+  HostName github.com
+  User git
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519_carl-manta
+  IdentitiesOnly yes
+
 Host *
   AddKeysToAgent yes
   UseKeychain yes
