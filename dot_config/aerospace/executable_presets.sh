@@ -17,9 +17,7 @@ STATE_DIR="${HOME}/.local/state/aerospace-presets"
 VIDEO_STATE="${STATE_DIR}/interview-workspace"
 
 notify() {
-    local message="${1//\\/\\\\}"
-    message="${message//\"/\\\"}"
-    /usr/bin/osascript -e "display notification \"${message}\" with title \"AeroSpace Presets\"" >/dev/null 2>&1 || true
+    :
 }
 
 die() {
