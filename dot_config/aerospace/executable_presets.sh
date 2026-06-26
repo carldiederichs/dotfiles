@@ -34,6 +34,36 @@ focused_workspace() {
     "$AEROSPACE" list-workspaces --focused --format '%{workspace}'
 }
 
+frontmost_window_id() {
+    local frontmost
+    local bundle_id
+    local window_title
+
+    frontmost="$(/usr/bin/osascript <<'OSA'
+tell application "System Events"
+    set frontProcesses to application processes whose frontmost is true
+    if (count of frontProcesses) is 0 then return ""
+
+    tell item 1 of frontProcesses
+        try
+            return (bundle identifier) & tab & (name of front window as text)
+        on error
+            return ""
+        end try
+    end tell
+end tell
+OSA
+)"
+    [[ -n "$frontmost" ]] || return 0
+
+    IFS=$'\t' read -r bundle_id window_title <<<"$frontmost"
+    [[ -n "$bundle_id" && -n "$window_title" ]] || return 0
+
+    "$AEROSPACE" list-windows --all --format '%{window-id}%{tab}%{app-bundle-id}%{tab}%{window-title}%{newline}' |
+        /usr/bin/awk -F '\t' -v bundle_id="$bundle_id" -v window_title="$window_title" \
+            '$2 == bundle_id && $3 == window_title { print $1; exit }'
+}
+
 focused_monitor_width() {
     local monitor_name
 
@@ -175,7 +205,10 @@ minimize_focused_window() {
 
     require_executable "$AEROSPACE"
     workspace="$(focused_workspace)"
-    window_id="$("$AEROSPACE" list-windows --focused --format '%{window-id}')"
+    window_id="$(frontmost_window_id)"
+    if [[ -z "$window_id" ]] || ! "$AEROSPACE" list-windows --all --format '%{window-id}' | /usr/bin/grep -Fxq "$window_id"; then
+        window_id="$("$AEROSPACE" list-windows --focused --format '%{window-id}')"
+    fi
     [[ -n "$window_id" ]] || die "Cannot identify the focused window."
 
     "$AEROSPACE" layout --window-id "$window_id" floating || true
