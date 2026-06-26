@@ -59,6 +59,32 @@ window_count() {
     "$AEROSPACE" list-windows --workspace "$1" --count
 }
 
+is_window_minimized() {
+    APP_BUNDLE_ID="$1" WINDOW_TITLE="$2" /usr/bin/osascript <<'OSA'
+set appBundleId to system attribute "APP_BUNDLE_ID"
+set windowTitle to system attribute "WINDOW_TITLE"
+
+tell application "System Events"
+    set matchingProcesses to processes whose bundle identifier is appBundleId
+    if (count of matchingProcesses) is 0 then return "false"
+
+    tell item 1 of matchingProcesses
+        repeat with candidateWindow in windows
+            if (name of candidateWindow as text) is windowTitle then
+                try
+                    return (value of attribute "AXMinimized" of candidateWindow) as text
+                on error
+                    return "false"
+                end try
+            end if
+        end repeat
+    end tell
+end tell
+
+return "false"
+OSA
+}
+
 is_left_app() {
     case "$1" in
         md.obsidian|\
@@ -111,6 +137,53 @@ force_windows_to_tiling() {
     for window_id in "$@"; do
         "$AEROSPACE" layout --window-id "$window_id" tiling || true
     done
+}
+
+rebalance_workspace() {
+    local workspace="$1"
+
+    "$AEROSPACE" flatten-workspace-tree --workspace "$workspace" || true
+    "$AEROSPACE" balance-sizes --workspace "$workspace" || true
+}
+
+float_minimized_windows() {
+    local workspace="${1:-}"
+    local window_id
+    local bundle_id
+    local window_title
+    local moved=0
+
+    require_executable "$AEROSPACE"
+    if [[ -z "$workspace" ]]; then
+        workspace="$(focused_workspace)"
+    fi
+
+    while IFS=$'\t' read -r window_id bundle_id window_title; do
+        [[ -n "$window_id" ]] || continue
+        if [[ "$(is_window_minimized "$bundle_id" "$window_title")" == "true" ]]; then
+            "$AEROSPACE" layout --window-id "$window_id" floating || true
+            moved=$(( moved + 1 ))
+        fi
+    done < <("$AEROSPACE" list-windows --workspace "$workspace" --format '%{window-id}%{tab}%{app-bundle-id}%{tab}%{window-title}%{newline}')
+
+    if (( moved > 0 )); then
+        rebalance_workspace "$workspace"
+    fi
+}
+
+minimize_focused_window() {
+    local workspace
+    local window_id
+
+    require_executable "$AEROSPACE"
+    workspace="$(focused_workspace)"
+    window_id="$("$AEROSPACE" list-windows --focused --format '%{window-id}')"
+    [[ -n "$window_id" ]] || die "Cannot identify the focused window."
+
+    "$AEROSPACE" layout --window-id "$window_id" floating || true
+    "$AEROSPACE" macos-native-minimize --window-id "$window_id"
+    /bin/sleep 0.15
+    rebalance_workspace "$workspace"
 }
 
 window_parent_layout() {
@@ -408,11 +481,17 @@ case "${1:-}" in
     layout)
         layout_preset "${2:-}"
         ;;
+    minimize)
+        minimize_focused_window
+        ;;
+    prune-minimized)
+        float_minimized_windows "${2:-}"
+        ;;
     video-toggle)
         video_toggle
         ;;
     *)
-        printf 'Usage: %s {layout [--dry-run]|video-toggle}\n' "$0" >&2
+        printf 'Usage: %s {layout [--dry-run]|minimize|prune-minimized [workspace]|video-toggle}\n' "$0" >&2
         exit 2
         ;;
 esac

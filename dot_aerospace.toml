@@ -113,8 +113,8 @@ cmd-alt-ctrl-j = 'resize smart -50'
 cmd-alt-ctrl-k = 'resize smart +50'
 
 # Rebuild the active workspace and toggle the interview-friendly share screen.
-cmd-alt-ctrl-p = 'exec-and-forget /Users/carldiederichs/dotfiles/aerospace/presets.sh layout'
-cmd-alt-ctrl-v = 'exec-and-forget /Users/carldiederichs/dotfiles/aerospace/presets.sh video-toggle'
+cmd-alt-ctrl-p = 'exec-and-forget /Users/carldiederichs/.config/aerospace/presets.sh layout'
+cmd-alt-ctrl-v = 'exec-and-forget /Users/carldiederichs/.config/aerospace/presets.sh video-toggle'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 # 1 leetcode-algorithmic, 2 tally, 3 bug-squash, 4 integration, 5 code-refactoring
@@ -148,6 +148,10 @@ alt-shift-n = 'move-node-to-workspace N'
 
 # fullscreen
 alt-shift-f = 'fullscreen'
+
+# Minimize without leaving a dead tile in the active workspace.
+cmd-m = 'exec-and-forget /Users/carldiederichs/.config/aerospace/presets.sh minimize'
+cmd-alt-ctrl-m = 'exec-and-forget /Users/carldiederichs/.config/aerospace/presets.sh prune-minimized'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands∑#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'

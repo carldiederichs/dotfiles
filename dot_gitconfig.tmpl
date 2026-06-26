@@ -30,3 +30,11 @@
 [include]
     # Machine-local overrides (not managed by chezmoi, e.g. work signing key)
     path = ~/.gitconfig.local
+
+[credential "https://github.com"]
+    helper =
+    helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+    helper =
+    helper = !/opt/homebrew/bin/gh auth git-credential
