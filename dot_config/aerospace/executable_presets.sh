@@ -179,18 +179,20 @@ repair_workspace_after_minimize() {
     local window_id
     local bundle_id
     local window_title
+    local workspace_window_count
     local repaired=0
 
     require_executable "$AEROSPACE"
     if [[ -z "$workspace" ]]; then
         workspace="$(focused_workspace)"
     fi
+    workspace_window_count="$("$AEROSPACE" list-windows --workspace "$workspace" --count)"
 
     while IFS=$'\t' read -r window_id bundle_id window_title; do
         [[ -n "$window_id" ]] || continue
         if [[ "$(is_window_minimized "$bundle_id" "$window_title")" != "true" ]] &&
             (is_left_app "$bundle_id" || is_right_app "$bundle_id") &&
-            [[ "$("$AEROSPACE" list-windows --workspace "$workspace" --count)" != "1" ]]; then
+            [[ "$workspace_window_count" != "1" ]]; then
             "$AEROSPACE" layout --window-id "$window_id" tiling || true
             repaired=$(( repaired + 1 ))
         fi
@@ -219,7 +221,6 @@ focus_workspace_window() {
 
     while IFS=$'\t' read -r window_id bundle_id window_title; do
         [[ -n "$window_id" ]] || continue
-        [[ "$(is_window_minimized "$bundle_id" "$window_title")" != "true" ]] || continue
         window_ids+=("$window_id")
     done < <("$AEROSPACE" list-windows --workspace "$workspace" --format '%{window-id}%{tab}%{app-bundle-id}%{tab}%{window-title}%{newline}')
 

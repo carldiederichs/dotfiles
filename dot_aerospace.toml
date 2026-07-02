@@ -60,7 +60,43 @@ outer.right =      10
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = 'move-node-to-workspace N'
+run = ['move-node-to-workspace N', 'layout tiling']
+
+[[on-window-detected]]
+if.app-id = 'com.todesktop.230313mzl4w4u92'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.googlecode.iterm2'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.postmanlabs.mac'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Safari'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.edgemac'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.openai.codex'
+run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.openai.chat'
+run = 'layout tiling'
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
