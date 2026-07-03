@@ -167,11 +167,17 @@ force_windows_to_tiling() {
     done
 }
 
+balance_workspace_sizes() {
+    local workspace="$1"
+
+    "$AEROSPACE" balance-sizes --workspace "$workspace" || true
+}
+
 rebalance_workspace() {
     local workspace="$1"
 
     "$AEROSPACE" flatten-workspace-tree --workspace "$workspace" || true
-    "$AEROSPACE" balance-sizes --workspace "$workspace" || true
+    balance_workspace_sizes "$workspace"
 }
 
 repair_workspace_after_minimize() {
@@ -198,7 +204,7 @@ repair_workspace_after_minimize() {
         fi
     done < <("$AEROSPACE" list-windows --workspace "$workspace" --format '%{window-id}%{tab}%{app-bundle-id}%{tab}%{window-title}%{newline}')
 
-    (( repaired == 0 )) || rebalance_workspace "$workspace"
+    (( repaired == 0 )) || balance_workspace_sizes "$workspace"
 }
 
 focus_workspace_window() {
@@ -214,9 +220,9 @@ focus_workspace_window() {
 
     require_executable "$AEROSPACE"
     workspace="$(focused_workspace)"
-    current_window_id="$("$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null || true)"
-    if [[ -z "$current_window_id" ]]; then
-        current_window_id="$(frontmost_window_id)"
+    current_window_id="$(frontmost_window_id)"
+    if [[ -z "$current_window_id" ]] || ! "$AEROSPACE" list-windows --workspace "$workspace" --format '%{window-id}' | /usr/bin/grep -Fxq "$current_window_id"; then
+        current_window_id="$("$AEROSPACE" list-windows --focused --format '%{window-id}' 2>/dev/null || true)"
     fi
 
     while IFS=$'\t' read -r window_id bundle_id window_title; do
@@ -267,7 +273,7 @@ minimize_focused_window() {
 
     "$AEROSPACE" macos-native-minimize --window-id "$window_id"
     /bin/sleep 0.15
-    rebalance_workspace "$workspace"
+    balance_workspace_sizes "$workspace"
 }
 
 window_parent_layout() {
