@@ -33,5 +33,19 @@
     }
   },
   "outputStyle": "learning",
-  "skipWorkflowUsageWarning": true
+  "skipWorkflowUsageWarning": true,
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/carldiederichs/.claude/hooks/auto-mirror.py",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
 }
