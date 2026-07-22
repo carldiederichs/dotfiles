@@ -15,6 +15,20 @@
       "mcp__excalidraw__read_diagram_guide"
     ]
   },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /Users/carldiederichs/.claude/hooks/auto-mirror.py",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "andrej-karpathy-skills@karpathy-skills": true
   },
@@ -33,19 +47,5 @@
     }
   },
   "outputStyle": "learning",
-  "skipWorkflowUsageWarning": true,
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 /Users/carldiederichs/.claude/hooks/auto-mirror.py",
-            "timeout": 120
-          }
-        ]
-      }
-    ]
-  }
+  "skipWorkflowUsageWarning": true
 }
