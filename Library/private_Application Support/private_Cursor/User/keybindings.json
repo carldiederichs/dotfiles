@@ -12,5 +12,9 @@
     {
         "key": "cmd+i",
         "command": "composerMode.agent"
+    },
+    {
+        "key": "cmd+1",
+        "command": "workbench.action.focusFirstEditorGroup"
     }
 ]
