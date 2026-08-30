@@ -47,5 +47,6 @@
     }
   },
   "outputStyle": "learning",
-  "skipWorkflowUsageWarning": true
+  "skipWorkflowUsageWarning": true,
+  "promptSuggestionEnabled": false
 }
