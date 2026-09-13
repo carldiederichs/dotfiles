@@ -1184,20 +1184,6 @@
 	<true/>
 	<key>Size Changes Affect Profile</key>
 	<false/>
-	<key>Snippets</key>
-	<array>
-		<dict>
-			<key>guid</key>
-			<string>F3F8B1AF-7890-4643-815A-6E7B123283DB</string>
-			<key>title</key>
-			<string>
-</string>
-			<key>value</key>
-			<string>\n</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-	</array>
 	<key>SoundForEsc</key>
 	<false/>
 	<key>StatusBarPosition</key>

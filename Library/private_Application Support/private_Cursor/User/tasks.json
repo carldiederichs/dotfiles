@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Send selection to Codex",
+            "type": "process",
+            "command": "/Users/carldiederichs/.config/aerospace/send-selection-to-codex.sh",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "never",
+                "echo": false,
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        }
+    ]
+}

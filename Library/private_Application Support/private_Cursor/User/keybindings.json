@@ -16,5 +16,33 @@
     {
         "key": "cmd+1",
         "command": "workbench.action.focusFirstEditorGroup"
+    },
+    {
+        "key": "cmd+l",
+        "command": "runCommands",
+        "when": "editorTextFocus && editorHasSelection",
+        "args": {
+            "commands": [
+                "editor.action.clipboardCopyAction",
+                {
+                    "command": "workbench.action.tasks.runTask",
+                    "args": "Send selection to Codex"
+                }
+            ]
+        }
+    },
+    {
+        "key": "cmd+l",
+        "command": "runCommands",
+        "when": "terminalFocus && terminalTextSelected",
+        "args": {
+            "commands": [
+                "workbench.action.terminal.copySelection",
+                {
+                    "command": "workbench.action.tasks.runTask",
+                    "args": "Send selection to Codex"
+                }
+            ]
+        }
     }
 ]

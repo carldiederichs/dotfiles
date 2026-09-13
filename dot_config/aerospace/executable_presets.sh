@@ -34,6 +34,27 @@ focused_workspace() {
     "$AEROSPACE" list-workspaces --focused --format '%{workspace}'
 }
 
+fullscreen_frontmost_window() {
+    local source="${BASH_SOURCE[0]%/*}/focused-fullscreen.swift"
+    local binary="${STATE_DIR}/focused-fullscreen"
+    local build
+
+    # Compile on change, not on every keypress. Publish atomically so repeated
+    # shortcuts cannot launch a partially written executable.
+    if [[ ! -x "$binary" || "$source" -nt "$binary" ]]; then
+        /bin/mkdir -p "$STATE_DIR"
+        build="$(/usr/bin/mktemp "${STATE_DIR}/focused-fullscreen.XXXXXX")"
+        if ! /usr/bin/xcrun swiftc "$source" -o "$build"; then
+            /bin/rm -f "$build"
+            die "Cannot build the native fullscreen helper."
+        fi
+        /bin/chmod +x "$build"
+        /bin/mv -f "$build" "$binary"
+    fi
+    [[ "${1:-}" != "--build-only" ]] || return 0
+    "$binary"
+}
+
 frontmost_window_id() {
     local frontmost
     local bundle_id
@@ -568,6 +589,9 @@ video_toggle() {
 }
 
 case "${1:-}" in
+    fullscreen)
+        fullscreen_frontmost_window "${2:-}"
+        ;;
     layout)
         layout_preset "${2:-}"
         ;;
@@ -587,7 +611,7 @@ case "${1:-}" in
         video_toggle
         ;;
     *)
-        printf 'Usage: %s {layout [--dry-run]|focus-next|focus-prev|minimize|prune-minimized [workspace]|video-toggle}\n' "$0" >&2
+        printf 'Usage: %s {fullscreen [--build-only]|layout [--dry-run]|focus-next|focus-prev|minimize|prune-minimized [workspace]|video-toggle}\n' "$0" >&2
         exit 2
         ;;
 esac

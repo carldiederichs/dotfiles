@@ -40,5 +40,9 @@
     "security.promptForLocalFileProtocolHandling": false,
     "git.openRepositoryInParentFolders": "never",
     "claudeCode.preferredLocation": "panel",
-    "chatgpt.commentCodeLensEnabled": false
+    "chatgpt.commentCodeLensEnabled": false,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "prettier.tabWidth": 4,
+    "prettier.useTabs": true
 }
