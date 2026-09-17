@@ -27,6 +27,17 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"/Users/carldiederichs/.claude/plugins/local/carl-output-protocol/hooks/inject_output_protocol.py\"",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
@@ -48,5 +59,6 @@
   },
   "outputStyle": "learning",
   "skipWorkflowUsageWarning": true,
-  "promptSuggestionEnabled": false
+  "promptSuggestionEnabled": false,
+  "disableBundledSkills": true
 }
