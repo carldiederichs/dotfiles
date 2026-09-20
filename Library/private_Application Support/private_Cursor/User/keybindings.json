@@ -44,5 +44,17 @@
                 }
             ]
         }
+    },
+    {
+        "key": "cmd+alt+t",
+        "command": "workbench.action.terminal.newWithProfile",
+        "args": {
+            "profileName": "TypeScript playground"
+        }
+    },
+    {
+        "key": "cmd+alt+enter",
+        "command": "workbench.action.terminal.runSelectedText",
+        "when": "editorTextFocus && editorHasSelection && editorLangId == typescript"
     }
 ]

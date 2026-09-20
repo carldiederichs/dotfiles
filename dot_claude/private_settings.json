@@ -15,6 +15,7 @@
       "mcp__excalidraw__read_diagram_guide"
     ]
   },
+  "disableBundledSkills": true,
   "hooks": {
     "PostToolUse": [
       {
@@ -58,7 +59,41 @@
     }
   },
   "outputStyle": "learning",
-  "skipWorkflowUsageWarning": true,
   "promptSuggestionEnabled": false,
-  "disableBundledSkills": true
+  "skipWorkflowUsageWarning": true,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: Not queryable here (no git remote configured in this repo — /Users/carldiederichs/code has no remotes); assume private",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: Not queryable here (origin/HEAD unset, no remotes configured)",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Host containment**: None configured — assume Claude Code runs on an ordinary developer machine with open internet",
+      "**Source control**: The trusted repo (/Users/carldiederichs/code) only — no remotes configured, no additional orgs configured",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar. Evidence of likely locations under the home directory: interviews/00-interview-practice-2026/supabase/server_credentials.py, lewagon/fullstack/food-for-thought/.env, manta/manta-voice/.env, manta/manta-voice/fly.prod.toml, projects/typescript-projects/nextjs-dashboard/.env, projects/typescript-projects/receipt-splitter/.env, projects/typescript-projects/receipt-splitter/.env.production, projects/typescript-projects/receipt-splitter/.env.test, interviews/00-interview-practice-2026/agent-reports/lovable-handoff-2026-08-14-captures-retention.zip, interviews/00-interview-practice-2026/agent-reports/system-audit-2026-08-12-course-workload-and-retention.md",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (e.g. manta/manta-voice/fly.prod.toml, manta/manta/tsconfig.prod.json, deploy-prod / deploy-prod-skip-build Makefile targets, logs-prod)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development (personal/hobby projects — many small side projects under home directory: interviews, manta, projects, lewagon, esade coursework)",
+      "**Trusted repo**: /Users/carldiederichs/code (working directory) — no git remote configured, so treat as a purely local, unpublished workspace; nothing to push to",
+      "**Org-specific CLiIs**: None configured — routine personal-machine tools observed (osascript, mdfind, sdef, lsof) are macOS system utilities, not org-specific",
+      "**Routine under Carl's home prefix**: file operations under /Users/carldiederichs (e.g. ~/code, ~/.claude, ~/dotfiles) reflect a single personal developer's machine, not a shared or org-managed host"
+    ],
+    "allow": [
+      "$defaults",
+      "Bash(mdfind:*)",
+      "Bash(sdef:*)",
+      "Bash(lsof:*)"
+    ]
+  }
 }

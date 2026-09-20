@@ -44,5 +44,21 @@
     "editor.tabSize": 4,
     "editor.detectIndentation": false,
     "prettier.tabWidth": 4,
-    "prettier.useTabs": true
+    "prettier.useTabs": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "terminal.integrated.env.osx": {
+        "NO_COLOR": null
+    },
+    "cursor.composer.queueManualSendBehavior2": "steer",
+    "terminal.integrated.profiles.osx": {
+        "TypeScript playground": {
+            "path": "/opt/homebrew/bin/deno",
+            "args": [
+                "repl",
+                "--no-config",
+                "--no-lock"
+            ],
+            "overrideName": true
+        }
+    }
 }

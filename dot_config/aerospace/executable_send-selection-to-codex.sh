@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Active: Cursor Cmd+L sends selected editor or terminal text to Codex.
+# Editor selections include TypeScript and Markdown source files.
+
 AEROSPACE="/opt/homebrew/bin/aerospace"
 CODEX_BUNDLE_ID="com.openai.codex"
 
