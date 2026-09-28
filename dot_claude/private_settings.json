@@ -58,7 +58,6 @@
       }
     }
   },
-  "outputStyle": "learning",
   "promptSuggestionEnabled": false,
   "skipWorkflowUsageWarning": true,
   "autoMode": {
